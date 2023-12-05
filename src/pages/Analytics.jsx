@@ -11,6 +11,7 @@ import GeoChart from "../charts/GeoChart";
 import PieChart from "../charts/PieChart";
 import BarChart from "../charts/BarChart";
 import CountUp from "react-countup";
+import Modal from '@mui/material/Modal';
 
 export default function Analytics() {
   return (
