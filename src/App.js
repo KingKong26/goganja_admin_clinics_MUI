@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Products from "./pages/Products";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
+import AddForm from './products/AddForm';
 
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/products" exact element={<Products />}></Route>
         <Route path="/analytics" exact element={<Analytics />}></Route>
         <Route path="/settings" exact element={<Settings />}></Route>
+        <Route path="/add-clinic" exact element={<AddForm />}></Route>
       </Routes>
     </BrowserRouter>
    </>

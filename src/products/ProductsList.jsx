@@ -7,7 +7,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Autocomplete, Box, Button, Divider, Stack, TextField, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Divider,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState, useEffect } from "react";
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore/lite";
 import { db } from "../firebase-config";
@@ -15,16 +23,18 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import Modal from '@mui/material/Modal';
+import Modal from "@mui/material/Modal";
+import AddForm from "./AddForm";
+import { useNavigate } from "react-router-dom";
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: "background.paper",
+  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
@@ -44,6 +54,7 @@ export default function StickyHeadTable() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getClinics();
@@ -97,35 +108,30 @@ export default function StickyHeadTable() {
 
   return (
     <>
-     <div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
+      <div>
+        <Modal
+          open={open}
+          // onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <AddForm closeEvent={handleClose} />
+          </Box>
+        </Modal>
+      </div>
+      {rows.length > 0 && (
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            sx={{ padding: "20px" }}
+          >
+            Your listings
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
-        </Box>
-      </Modal>
-    </div>
-    {rows.length > 0 && (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <Typography
-        gutterBottom
-        variant="h5"
-        component="div"
-        sx={{ padding: "20px" }}
-      >
-        Your listings
-      </Typography>
-      <Divider />
-      <Box height={10} />
+          <Divider />
+          <Box height={10} />
           <Stack direction="row" spacing={2} className="my-2 mb-2">
             <Autocomplete
               disablePortal
@@ -143,48 +149,55 @@ export default function StickyHeadTable() {
               component="div"
               sx={{ flexGrow: 1 }}
             ></Typography>
-            <Button variant="contained" endIcon={<AddCircleIcon />} onClick={handleOpen}>
-              Add
+            <Button
+              variant="contained"
+              endIcon={<AddCircleIcon />}
+              onClick={() => navigate("/add-clinic")}
+            >
+              Add Clinic
             </Button>
           </Stack>
           <Box height={10} />
-      <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="left" style={{ minWidth: "100px" }}>
-                Name
-              </TableCell>
-              <TableCell align="left" style={{ minWidth: "100px" }}>
-                Featured Image
-              </TableCell>
-              <TableCell align="left" style={{ minWidth: "100px" }}>
-                Address
-              </TableCell>
-              <TableCell align="left" style={{ minWidth: "100px" }}>
-                City
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1}>
-                    <TableCell key={row.id} align="left">
-                      {row.name}
-                    </TableCell>
-                    <TableCell key={row.id} align="left">
-                     <img src={row.featuredImage} style={{ width: '100px', height: 'auto' }} />
-                    </TableCell>
-                    <TableCell key={row.id} align="left">
-                      {row.address}
-                    </TableCell>
-                    <TableCell key={row.id} align="left">
-                      {row.city}
-                    </TableCell>
-                    <TableCell align="left">
+          <TableContainer sx={{ maxHeight: 440 }}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="left" style={{ minWidth: "100px" }}>
+                    Name
+                  </TableCell>
+                  <TableCell align="left" style={{ minWidth: "100px" }}>
+                    Featured Image
+                  </TableCell>
+                  <TableCell align="left" style={{ minWidth: "100px" }}>
+                    Address
+                  </TableCell>
+                  <TableCell align="left" style={{ minWidth: "100px" }}>
+                    City
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => {
+                    return (
+                      <TableRow hover role="checkbox" tabIndex={-1}>
+                        <TableCell key={row.id} align="left">
+                          {row.name}
+                        </TableCell>
+                        <TableCell key={row.id} align="left">
+                          <img
+                            src={row.featuredImage}
+                            style={{ width: "100px", height: "auto" }}
+                          />
+                        </TableCell>
+                        <TableCell key={row.id} align="left">
+                          {row.address}
+                        </TableCell>
+                        <TableCell key={row.id} align="left">
+                          {row.city}
+                        </TableCell>
+                        <TableCell align="left">
                           <Stack spacing={2} direction="row">
                             <EditIcon
                               style={{
@@ -207,23 +220,23 @@ export default function StickyHeadTable() {
                             />
                           </Stack>
                         </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
-    )}
+                      </TableRow>
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[10, 25, 100]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
+      )}
     </>
   );
 }
