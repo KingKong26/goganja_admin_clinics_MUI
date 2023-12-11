@@ -1,28 +1,109 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  MenuItem,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Sidenav from "../components/Sidenav";
+import SvgIcon from "@mui/material/SvgIcon";
+import ThailandBahtIcon from "../components/CustomIcons";
+import { db, storage } from "../firebase-config";
+import Swal from "sweetalert2";
+import { addDoc, collection, getDocs } from "firebase/firestore/lite";
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-function AddForm({ closeEvent }) {
+export default function AddForm() {
   const [formData, setFormData] = useState({
     name: "",
     address: "",
+    city: "",
     initialConsultFee: "",
     featuredImage: null,
     additionalImages: [],
+    services: [],
   });
-
   const [showAddButton, setShowAddButton] = useState(true);
   const [services, setServices] = useState([]);
   const [newService, setNewService] = useState("");
-  const [name, setName] = useState();
-  const [address, setAddress] = useState();
-  const [city, setCity] = useState();
-  const [featuredImage, setFeaturedImage] = useState();
-  const [image, setImage] = useState([]);
+  const [rows, setRows] = useState([]);
+  const [selectedCity, setSelectedCity] = useState("");
+  const empCollectionRef = collection(db, "clinics");
+
+  const createClinic = async () => {
+    const {
+      name,
+      initialConsultFee,
+      featuredImage,
+      additionalImages,
+      address,
+      city,
+    } = formData;
+
+    // Upload the featured image to Firebase Storage
+    const featuredImageRef = ref(storage, `clinic_images/${featuredImage.name}`);
+    await uploadBytes(featuredImageRef, featuredImage);
+
+    // Get the download URL for the featured image
+    const featuredImageUrl = await getDownloadURL(featuredImageRef);
+
+    // Upload additional images to Firebase Storage
+    const additionalImageUrls = await Promise.all(
+      formData.additionalImages.map(async (image) => {
+        const imageRef = ref(storage, `clinic_images/${image.name}`);
+        await uploadBytes(imageRef, image);
+        return getDownloadURL(imageRef);
+      })
+    );
+
+    // Save clinic data with image URLs to Firestore
+    await addDoc(empCollectionRef, {
+      name,
+      initialConsultFee: Number(initialConsultFee),
+      address,
+      city,
+      featuredImageUrl,
+      additionalImageUrls,
+      date: String(new Date()),
+    });
+
+    getClinics();
+    Swal.fire('Submitted!', 'Your file has been submitted.', 'success');
+  };
+  const getClinics = async () => {
+    const data = await getDocs(empCollectionRef);
+    setRows(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
+
+  // const [name, setName] = useState();
+  // const [address, setAddress] = useState();
+  // const [city, setCity] = useState();
+  // const [featuredImageUpload , setFeaturedImageUpload] = useState();
+  // const [image, setImage] = useState([]);
+
+  // const handleNameChange = (e) => {
+  //   setName(e.target.value);
+  // };
+  // const handleAddressChange = (e) => {
+  //   setAddress(e.target.value);
+  // }
+  // const handleCityChange = (e) => {
+  //   setCity(e.target.value);
+  // }
+  // const handleNameChange = (e) => {
+  //   setName(e.target.value);
+  // }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+  
+    if (name === "city") {
+      setSelectedCity(value);
+    }
+  
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
@@ -33,7 +114,10 @@ function AddForm({ closeEvent }) {
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    setFormData((prevData) => ({ ...prevData, additionalImages: [...prevData.additionalImages, file] }));
+    setFormData((prevData) => ({
+      ...prevData,
+      additionalImages: [...prevData.additionalImages, file],
+    }));
     setShowAddButton(false);
   };
 
@@ -50,7 +134,7 @@ function AddForm({ closeEvent }) {
   const handleServiceChange = (e) => {
     setNewService(e.target.value);
   };
-  
+
   const handleAddService = () => {
     if (newService.trim() !== "") {
       setServices((prevServices) => [...prevServices, newService]);
@@ -63,21 +147,40 @@ function AddForm({ closeEvent }) {
     newServices.splice(index, 1);
     setServices(newServices);
   };
-  
-  const createClinic = () => {
 
-  }
+  const cities = [
+    {
+      value: "Bangkok",
+      label: "Bangkok",
+    },
+    {
+      value: "Pattaya",
+      label: "Pattaya",
+    },
+    {
+      value: "KoSamui",
+      label: "Ko Samui",
+    },
+    {
+      value: "ChiangMai",
+      label: "Chiang Mai",
+    },
+    {
+      value: "Phuket",
+      label: "Phuket",
+    },
+  ];
 
   return (
     <div>
       <Navbar />
-      <Box height={70}/>
+      <Box height={100} />
       <Box
         sx={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "80vh",
+          height: "120vh",
           padding: 2,
         }}
       >
@@ -86,10 +189,11 @@ function AddForm({ closeEvent }) {
           <Typography variant="h5" align="center" gutterBottom>
             Add Clinic
           </Typography>
-          <Grid container spacing={2} >
+          <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
                 id="name"
+                name="name"
                 label="Name"
                 variant="outlined"
                 fullWidth
@@ -101,6 +205,7 @@ function AddForm({ closeEvent }) {
               <TextField
                 id="address"
                 label="Address"
+                name="address"
                 variant="outlined"
                 fullWidth
                 value={formData.address}
@@ -109,12 +214,37 @@ function AddForm({ closeEvent }) {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                id="city"
+                label="City/Province"
+                select
+                name="city"
+                variant="outlined"
+                fullWidth
+                value={selectedCity}
+                onChange={(e) => handleInputChange(e)}
+              >
+                {cities.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
                 id="initialConsultFee"
+                name="initialConsultFee"
                 label="Initial Consult Fee"
                 variant="outlined"
                 fullWidth
+                type="number"
                 value={formData.initialConsultFee}
                 onChange={handleInputChange}
+                InputProps={{
+                  startAdornment: (
+                    <ThailandBahtIcon color="primary" fontSize="default" />
+                  ),
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -122,7 +252,9 @@ function AddForm({ closeEvent }) {
                 id="featured-image"
                 label="Featured Image"
                 variant="outlined"
-                value={formData.featuredImage ? formData.featuredImage.name : ""}
+                value={
+                  formData.featuredImage ? formData.featuredImage.name : ""
+                }
                 fullWidth
                 InputProps={{
                   readOnly: true,
@@ -154,7 +286,14 @@ function AddForm({ closeEvent }) {
                 }}
               />
               {formData.additionalImages.map((image, index) => (
-                <div key={index} style={{ display: "flex", alignItems: "center", marginTop: "8px" }}>
+                <div
+                  key={index}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginTop: "8px",
+                  }}
+                >
                   <TextField
                     variant="outlined"
                     fullWidth
@@ -164,7 +303,9 @@ function AddForm({ closeEvent }) {
                     }}
                   />
                   <Button onClick={() => handleDeleteImage(index)}>
-                    <span role="img" aria-label="delete">❌</span>
+                    <span role="img" aria-label="delete">
+                      ❌
+                    </span>
                   </Button>
                 </div>
               ))}
@@ -193,49 +334,59 @@ function AddForm({ closeEvent }) {
               )}
             </Grid>
           </Grid>
-          <Grid item xs={12} sx={{mt:2}}>
-  <TextField
-    id="services"
-    label="Services"
-    variant="outlined"
-    fullWidth
-    value={newService}
-    onChange={handleServiceChange}
-  />
-  <Button variant="outlined" onClick={handleAddService} fullWidth sx={{mt:2}}>
-    Add Service
-  </Button>
-  {services.map((service, index) => (
-    <div key={index} style={{ display: "flex", alignItems: "center", marginTop: "8px" }}>
-      <TextField
-        variant="outlined"
-        fullWidth
-        value={service}
-        InputProps={{
-          readOnly: true,
-        }}
-        
-      />
-      <Button onClick={() => handleDeleteService(index)}>
-        <span role="img" aria-label="delete">❌</span>
-      </Button>
-    </div>
-  ))}
-</Grid>
-<Grid item xs={12} sx={{mt:3}}>
-  <Typography variant="h5" align="center">
-    <Button variant="contained" onClick={createClinic}>
-      Submit
-    </Button>
-  </Typography>
-  
-  <Box sx={{m:4}} />
-</Grid>
+          <Grid item xs={12} sx={{ mt: 2 }}>
+            <TextField
+              id="services"
+              label="Services"
+              variant="outlined"
+              fullWidth
+              value={newService}
+              onChange={handleServiceChange}
+            />
+            <Button
+              variant="outlined"
+              onClick={handleAddService}
+              fullWidth
+              sx={{ mt: 2 }}
+            >
+              Add Service
+            </Button>
+            {services.map((service, index) => (
+              <div
+                key={service}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginTop: "8px",
+                }}
+              >
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  value={service}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+                <Button onClick={() => handleDeleteService(index)}>
+                  <span role="img" aria-label="delete">
+                    ❌
+                  </span>
+                </Button>
+              </div>
+            ))}
+          </Grid>
+          <Grid item xs={12} sx={{ mt: 3 }}>
+            <Typography variant="h5" align="center">
+            <Button variant="contained" onClick={() => { console.log(formData); createClinic(); }}>
+                Submit
+              </Button>
+            </Typography>
+
+            <Box sx={{ m: 4 }} />
+          </Grid>
         </Box>
-        
       </Box>
     </div>
   );
 }
-
-export default AddForm;
