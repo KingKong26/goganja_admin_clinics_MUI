@@ -6,13 +6,14 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useNavigate } from "react-router-dom";
-import GroupIcon from '@mui/icons-material/Group';
+import GroupIcon from "@mui/icons-material/Group";
 import { useAppStore } from "../appStore";
-import SettingsIcon from '@mui/icons-material/Settings';
-import HomeIcon from '@mui/icons-material/Home';
-import AnalyticsIcon from '@mui/icons-material/Analytics';
+import SettingsIcon from "@mui/icons-material/Settings";
+import HomeIcon from "@mui/icons-material/Home";
+import AnalyticsIcon from "@mui/icons-material/Analytics";
+import DateRangeIcon from "@mui/icons-material/DateRange";
 
 const drawerWidth = 240;
 
@@ -129,6 +130,34 @@ export default function Sidenav() {
             <ListItemText primary="Products" sx={{ opacity: open ? 1 : 0 }} />
           </ListItemButton>
         </ListItem>
+
+        <ListItem
+          disablePadding
+          sx={{ display: "block" }}
+          onClick={() => {
+            navigate("/bookings");
+          }}
+        >
+          <ListItemButton
+            sx={{
+              minHeight: 48,
+              justifyContent: open ? "initial" : "center",
+              px: 2.5,
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : "auto",
+                justifyContent: "center",
+              }}
+            >
+              <DateRangeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Bookings" sx={{ opacity: open ? 1 : 0 }} />
+          </ListItemButton>
+        </ListItem>
+
         <ListItem
           disablePadding
           sx={{ display: "block" }}
