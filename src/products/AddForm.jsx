@@ -1,7 +1,9 @@
 import {
   Box,
   Button,
+  FormControl,
   Grid,
+  InputLabel,
   MenuItem,
   TextField,
   Typography,
@@ -14,7 +16,10 @@ import ThailandBahtIcon from "../components/CustomIcons";
 import { db, storage } from "../firebase-config";
 import Swal from "sweetalert2";
 import { addDoc, collection, getDocs } from "firebase/firestore/lite";
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
 export default function AddForm() {
   const [formData, setFormData] = useState({
@@ -25,6 +30,15 @@ export default function AddForm() {
     featuredImage: null,
     additionalImages: [],
     services: [],
+    openingHours: {
+      monday: { opening: null, closing: null },
+      tuesday: { opening: null, closing: null },
+      wednesday: { opening: null, closing: null },
+      thursday: { opening: null, closing: null },
+      friday: { opening: null, closing: null },
+      saturday: { opening: null, closing: null },
+      sunday: { opening: null, closing: null },
+    },
   });
   const [showAddButton, setShowAddButton] = useState(true);
   const [services, setServices] = useState([]);
@@ -44,7 +58,10 @@ export default function AddForm() {
     } = formData;
 
     // Upload the featured image to Firebase Storage
-    const featuredImageRef = ref(storage, `clinic_images/${featuredImage.name}`);
+    const featuredImageRef = ref(
+      storage,
+      `clinic_images/${featuredImage.name}`
+    );
     await uploadBytes(featuredImageRef, featuredImage);
 
     // Get the download URL for the featured image
@@ -71,7 +88,7 @@ export default function AddForm() {
     });
 
     getClinics();
-    Swal.fire('Submitted!', 'Your file has been submitted.', 'success');
+    Swal.fire("Submitted!", "Your file has been submitted.", "success");
   };
   const getClinics = async () => {
     const data = await getDocs(empCollectionRef);
@@ -99,11 +116,11 @@ export default function AddForm() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-  
+
     if (name === "city") {
       setSelectedCity(value);
     }
-  
+
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
@@ -148,6 +165,19 @@ export default function AddForm() {
     setServices(newServices);
   };
 
+  const handleTimeChange = (day, timeType, time) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      openingHours: {
+        ...prevData.openingHours,
+        [day]: {
+          ...prevData.openingHours[day],
+          [timeType]: time,
+        },
+      },
+    }));
+  };
+
   const cities = [
     {
       value: "Bangkok",
@@ -180,7 +210,7 @@ export default function AddForm() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "120vh",
+          height: "auto", // or use a fixed height like "600px"
           padding: 2,
         }}
       >
@@ -246,6 +276,44 @@ export default function AddForm() {
                   ),
                 }}
               />
+            </Grid>
+            <Grid item xs={12}>
+            <h3>Business Hours</h3>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Grid container spacing={3}>
+                  
+                  {Object.keys(formData.openingHours).map((day) => (
+                    <Grid item xs={6} key={day}>
+                      <FormControl fullWidth>
+                        <InputLabel id={`${day}-opening-picker-label`} sx={{ margin: "0 100px" }}>
+                          {day} Opening
+                        </InputLabel>
+                        <TimePicker
+                          labelId={`${day}-opening-picker-label`}
+                          value={formData.openingHours[day].opening}
+                          onChange={(time) => handleTimeChange(day, "opening", time)}
+                          renderInput={(params) => (
+                            <TextField {...params} size="small" variant="outlined" />
+                          )}
+                        />
+                      </FormControl>
+                      <FormControl fullWidth>
+                        <InputLabel id={`${day}-closing-picker-label`} sx={{ margin: "0 100px" }}>
+                          {day} Closing
+                        </InputLabel>
+                        <TimePicker
+                          labelId={`${day}-closing-picker-label`}
+                          value={formData.openingHours[day].closing}
+                          onChange={(time) => handleTimeChange(day, "closing", time)}
+                          renderInput={(params) => (
+                            <TextField {...params} size="small" variant="outlined" />
+                          )}
+                        />
+                      </FormControl>
+                    </Grid>
+                  ))}
+                </Grid>
+              </LocalizationProvider>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -378,7 +446,13 @@ export default function AddForm() {
           </Grid>
           <Grid item xs={12} sx={{ mt: 3 }}>
             <Typography variant="h5" align="center">
-            <Button variant="contained" onClick={() => { console.log(formData); createClinic(); }}>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  console.log(formData);
+                  createClinic();
+                }}
+              >
                 Submit
               </Button>
             </Typography>
