@@ -5,6 +5,7 @@ import Products from "./pages/Products";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import AddForm from './products/AddForm';
+import Bookings from './pages/Bookings';
 
 
 export default function App() {
@@ -17,6 +18,8 @@ export default function App() {
         <Route path="/analytics" exact element={<Analytics />}></Route>
         <Route path="/settings" exact element={<Settings />}></Route>
         <Route path="/add-clinic" exact element={<AddForm />}></Route>
+        <Route path="/bookings" exact element={<Bookings />}></Route>
+
       </Routes>
     </BrowserRouter>
    </>
