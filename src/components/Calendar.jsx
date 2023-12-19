@@ -105,10 +105,6 @@ const CalendarComponent = () => {
         setErrors(newErrors);
       } else {
         onConfirm(formData);
-
-        // Handle form submission logic here
-        console.log("Form submitted with values:", formData);
-        // Add your logic to save the data (e.g., using Firestore)
       }
     };
 
@@ -342,7 +338,7 @@ const CalendarComponent = () => {
         console.error("Error updating event:", error);
       }
     }
-    setUpdateModalOpen(false); // Close the modal after updating
+    setUpdateModalOpen(false); 
   };
 
   const handleEventClick = (info, eventAction) => {
@@ -383,7 +379,7 @@ const CalendarComponent = () => {
   // Event handler for deleting an event
   const handleDeleteEvent = async (info, event) => {
     try {
-      await deleteDoc(doc(db, "events", selectedEvent.id)); // Fix this line
+      await deleteDoc(doc(db, "events", selectedEvent.id)); 
       const updatedEvents = events.filter(
         (event) => event.id !== selectedEvent.id
       );
@@ -402,8 +398,8 @@ const CalendarComponent = () => {
               plugins={[dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
               events={events}
-              dateClick={(info) => handleEventClick(info, "add")} // Clicking on a date to add a new event
-              eventClick={(info) => handleEventClick(info.event, "edit")} // Clicking on an event to update
+              dateClick={(info) => handleEventClick(info, "add")} 
+              eventClick={(info) => handleEventClick(info.event, "edit")} 
               eventContent={(eventContent) => (
                 <>
                   <span>{eventContent.timeText}</span>
