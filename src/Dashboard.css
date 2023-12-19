@@ -44,3 +44,9 @@
     margin-top: 20px;
     margin-left: 20px;
 }
+.errorText{
+    color: #d32f2f;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 12px;
+}
