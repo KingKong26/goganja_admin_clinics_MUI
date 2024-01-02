@@ -12,6 +12,8 @@ import Profile from "./Profile";
 import Password from "./Password";
 import Account from "./Account";
 import Personal from "./Personal";
+import { useAuth } from "../context/UserContext";
+import { CircularProgress } from "@mui/material";
 
 const StyledTabs = styled((props) => (
   <Tabs
@@ -83,6 +85,7 @@ function a11yProps(index) {
 
 export default function List() {
   const [value, setValue] = React.useState(0);
+  const { userData } = useAuth();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -92,32 +95,46 @@ export default function List() {
     <>
       <Card sx={{ minHeight: 84 + "vh" }}>
         <CardContent>
-          <Box sx={{ width: "100%" }}>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <StyledTabs
-                value={value}
-                onChange={handleChange}
-                aria-label="styled tabs example"
-              >
-                <StyledTab label="Profile" {...a11yProps(0)} />
-                <StyledTab label="Personal Details" {...a11yProps(1)} />
-                <StyledTab label="My Account" {...a11yProps(2)} />
-                <StyledTab label="Change Password" {...a11yProps(3)} />
-              </StyledTabs>
+          {userData ? (
+            <Box sx={{ width: "100%" }}>
+              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                <StyledTabs
+                  value={value}
+                  onChange={handleChange}
+                  aria-label="styled tabs example"
+                >
+                  <StyledTab label="Profile" {...a11yProps(0)} />
+                  <StyledTab label="Personal Details" {...a11yProps(1)} />
+                  <StyledTab label="My Account" {...a11yProps(2)} />
+                  <StyledTab label="Change Password" {...a11yProps(3)} />
+                </StyledTabs>
+              </Box>
+              <TabPanel value={value} index={0}>
+                <Profile />
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <Personal />
+              </TabPanel>
+              <TabPanel value={value} index={2}>
+                <Account />
+              </TabPanel>
+              <TabPanel value={value} index={3}>
+                <Password />
+              </TabPanel>
             </Box>
-            <TabPanel value={value} index={0}>
-              <Profile />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-              <Personal />
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-              <Account />
-            </TabPanel>
-            <TabPanel value={value} index={3}>
-              <Password />
-            </TabPanel>
-          </Box>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                height: "100vh",
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          )}
         </CardContent>
       </Card>
     </>

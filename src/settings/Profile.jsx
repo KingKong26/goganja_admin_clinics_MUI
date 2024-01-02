@@ -8,8 +8,11 @@ import Stack from "@mui/material/Stack";
 import EmailIcon from "@mui/icons-material/Email";
 import SmartphoneIcon from "@mui/icons-material/Smartphone";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { useAuth } from "../context/UserContext";
 
 export default function Profile() {
+  const { userData } = useAuth();
+  console.log(userData);
   return (
     <>
       <Grid container spacing={2} sx={{ mt: "200" }}>
@@ -19,7 +22,7 @@ export default function Profile() {
               <Card>
                 <CardContent>
                   <Typography variant="h6" align="left">
-                    P Kumar
+                    {userData?.name}
                   </Typography>
                   <Divider sx={{ mt: 2 }} />
                   <Stack direction="row" spacing={2}>
@@ -27,7 +30,7 @@ export default function Profile() {
                       <EmailIcon sx={{ m: 2 }} />
                     </div>
                     <div>
-                      <p>code@codemstr.com</p>
+                      <p>{userData?.email || "-"}</p>
                     </div>
                   </Stack>
                   <Divider />
@@ -36,7 +39,7 @@ export default function Profile() {
                       <SmartphoneIcon sx={{ m: 2 }} />
                     </div>
                     <div>
-                      <p>(+91) 99999 99999</p>
+                      <p>{userData?.phone || "-"}</p>
                     </div>
                   </Stack>
                   <Divider />
@@ -45,7 +48,7 @@ export default function Profile() {
                       <LocationOnIcon sx={{ m: 2 }} />
                     </div>
                     <div>
-                      <p>code@codemstr.com</p>
+                      <p>{userData?.location || "-"}</p>
                     </div>
                   </Stack>
                 </CardContent>
@@ -63,11 +66,7 @@ export default function Profile() {
                   </Typography>
                   <Divider sx={{ mt: 2 }} />
                   <Typography variant="body2" gutterBottom sx={{ mt: 2 }}>
-                    body2. Lorem ipsum dolor sit amet, consectetur adipisicing
-                    elit. Quos blanditiis tenetur unde suscipit, quam beatae
-                    rerum inventore consectetur, neque doloribus, cupiditate
-                    numquam dignissimos laborum fugiat deleniti? Eum quasi
-                    quidem quibusdam.
+                    {userData?.bio || "-"}
                   </Typography>
                   <Typography variant="h6" align="left" sx={{ mt: "30px" }}>
                     Details
@@ -78,7 +77,9 @@ export default function Profile() {
                       <Typography variant="subtitle2" sx={{ width: "140px" }}>
                         Full Name:
                       </Typography>
-                      <Typography variant="body2">Albert Eintein</Typography>
+                      <Typography variant="body2">
+                        {userData?.name || "-"}
+                      </Typography>
                     </Stack>
                   </Box>
                   <Divider />
@@ -88,7 +89,7 @@ export default function Profile() {
                         Father's Name:
                       </Typography>
                       <Typography variant="body2">
-                        Sr. Albert Eintein
+                        {userData?.fatherName || "-"}
                       </Typography>
                     </Stack>
                   </Box>
@@ -98,7 +99,9 @@ export default function Profile() {
                       <Typography variant="subtitle2" sx={{ width: "140px" }}>
                         Address:
                       </Typography>
-                      <Typography variant="body2">Patna, India</Typography>
+                      <Typography variant="body2">
+                        {userData?.location || "-"}
+                      </Typography>
                     </Stack>
                   </Box>
                   <Divider />
@@ -107,7 +110,9 @@ export default function Profile() {
                       <Typography variant="subtitle2" sx={{ width: "140px" }}>
                         Zip Code:
                       </Typography>
-                      <Typography variant="body2">809990</Typography>
+                      <Typography variant="body2">
+                        {userData?.zipCode || "-"}
+                      </Typography>
                     </Stack>
                   </Box>
                   <Divider />
@@ -117,7 +122,7 @@ export default function Profile() {
                         Website:
                       </Typography>
                       <Typography variant="body2">
-                        https://trickuweb.com
+                        {userData?.profileUrl || "-"}
                       </Typography>
                     </Stack>
                   </Box>
