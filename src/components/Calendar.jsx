@@ -40,8 +40,10 @@ export const StyleWrapper = styled.div`
   .fc .fc-col-header-cell-cushion {
     font-family: "montserrat";
   }
-  .fc .fc-button-bg-color {
-    background-color: #314435;
+  .fc .fc-button-primary {
+    background-color: #d7a90e;
+    color: #000;
+    border-color: #d7a90e;
   }
 `;
 
@@ -314,7 +316,7 @@ const CalendarComponent = () => {
             >
               <Button
                 variant="contained"
-                color="primary"
+                color="secondary"
                 onClick={handleConfirm}
               >
                 Confirm

@@ -151,6 +151,7 @@ export default function Account() {
                             checked={state.gilad}
                             onChange={handleChange}
                             name="gilad"
+                            color="secondary"
                           />
                         }
                         label="Gilad Gray"
@@ -161,6 +162,7 @@ export default function Account() {
                             checked={state.jason}
                             onChange={handleChange}
                             name="jason"
+                            color="secondary"
                           />
                         }
                         label="Jason Killian"
@@ -171,6 +173,7 @@ export default function Account() {
                             checked={state.antoine}
                             onChange={handleChange}
                             name="antoine"
+                            color="secondary"
                           />
                         }
                         label="Antoine Llorca"

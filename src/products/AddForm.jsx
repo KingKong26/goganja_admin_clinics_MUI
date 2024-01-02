@@ -452,6 +452,7 @@ export default function AddForm() {
                   console.log(formData);
                   createClinic();
                 }}
+                color="secondary"
               >
                 Submit
               </Button>

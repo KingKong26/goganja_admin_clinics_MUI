@@ -18,7 +18,7 @@ const StyledTabs = styled((props) => (
     {...props}
     TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
   />
-))({
+))(({ theme }) => ({
   "& .MuiTabs-indicator": {
     display: "flex",
     justifyContent: "center",
@@ -26,9 +26,9 @@ const StyledTabs = styled((props) => (
   },
   "& .MuiTabs-indicatorSpan": {
     width: "100%",
-    backgroundColor: "rgba(53, 138, 148, 1)",
+    backgroundColor: theme.palette.secondary.main,
   },
-});
+}));
 
 const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
   ({ theme }) => ({
@@ -39,10 +39,10 @@ const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
     color: "#141414",
     fontWeight: "400",
     "&.Mui-selected": {
-      color: "",
+      color: theme.palette.secondary.main,
     },
     "&.Mui-focusVisible": {
-      backgroundColor: "secondary",
+      backgroundColor: theme.palette.secondary.main,
     },
   })
 );

@@ -151,6 +151,7 @@ export default function StickyHeadTable() {
               variant="contained"
               endIcon={<AddCircleIcon />}
               onClick={() => navigate("/add-clinic")}
+              color="secondary"
             >
               Add Clinic
             </Button>
