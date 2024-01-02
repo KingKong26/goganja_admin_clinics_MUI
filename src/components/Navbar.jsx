@@ -4,7 +4,6 @@ import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
@@ -17,6 +16,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { useAppStore } from "../appStore";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/GoGanjaLogoGold.png";
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
@@ -62,6 +62,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const StyledLogo = styled("img");
+
 export default function Navbar() {
   const updateDopen = useAppStore((state) => state.updateDopen);
   const dopen = useAppStore((state) => state.dopen);
@@ -96,6 +98,7 @@ export default function Navbar() {
         vertical: "top",
         horizontal: "right",
       }}
+      sx={{ top: 36 }}
       id={menuId}
       keepMounted
       transformOrigin={{
@@ -166,36 +169,28 @@ export default function Navbar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="fixed"
-        sx={{ backgroundColor: "#ffffff", color: "#2f2f2f" }}
+        sx={{ backgroundColor: "primary", color: "#2f2f2f" }}
         elevation={0}
       >
         <Toolbar>
           <IconButton
             size="large"
             edge="start"
-            color="inherit"
+            color="background"
             aria-label="open drawer"
-            sx={{ mr: 2 }}
             onClick={() => {
               updateDopen(!dopen);
             }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            CodingMSTR
-          </Typography>
+          <img src={logo} />
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
               size="large"
               aria-label="show 4 new mails"
-              color="inherit"
+              color="background"
             >
               <Badge badgeContent={4} color="error">
                 <MailIcon />
@@ -204,7 +199,7 @@ export default function Navbar() {
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
-              color="inherit"
+              color="background"
             >
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
@@ -217,7 +212,7 @@ export default function Navbar() {
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
-              color="inherit"
+              color="background"
             >
               <AccountCircle />
             </IconButton>
@@ -229,7 +224,7 @@ export default function Navbar() {
               aria-controls={mobileMenuId}
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
-              color="inherit"
+              color="background"
             >
               <MoreIcon />
             </IconButton>

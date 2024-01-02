@@ -25,7 +25,6 @@ const StyledTabs = styled((props) => (
     backgroundColor: "transparent",
   },
   "& .MuiTabs-indicatorSpan": {
-    maxWidth: 40,
     width: "100%",
     backgroundColor: "rgba(53, 138, 148, 1)",
   },
@@ -40,10 +39,10 @@ const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
     color: "#141414",
     fontWeight: "400",
     "&.Mui-selected": {
-      color: "#0c828f",
+      color: "",
     },
     "&.Mui-focusVisible": {
-      backgroundColor: "#30c1d1",
+      backgroundColor: "secondary",
     },
   })
 );

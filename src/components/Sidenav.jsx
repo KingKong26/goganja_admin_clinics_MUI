@@ -24,6 +24,7 @@ const openedMixin = (theme) => ({
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: "hidden",
+  background: theme.palette.primary.main,
 });
 
 const closedMixin = (theme) => ({
@@ -36,6 +37,7 @@ const closedMixin = (theme) => ({
   [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
+  background: theme.palette.primary.main,
 });
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -90,6 +92,7 @@ export default function Sidenav() {
               minHeight: 48,
               justifyContent: open ? "initial" : "center",
               px: 2.5,
+              color: "#fff",
             }}
           >
             <ListItemIcon
@@ -99,7 +102,7 @@ export default function Sidenav() {
                 justifyContent: "center",
               }}
             >
-              <HomeIcon />
+              <HomeIcon color="background" />
             </ListItemIcon>
             <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
           </ListItemButton>
@@ -116,6 +119,7 @@ export default function Sidenav() {
               minHeight: 48,
               justifyContent: open ? "initial" : "center",
               px: 2.5,
+              color: "#fff",
             }}
           >
             <ListItemIcon
@@ -125,7 +129,7 @@ export default function Sidenav() {
                 justifyContent: "center",
               }}
             >
-              <ShoppingCartIcon />
+              <ShoppingCartIcon color="background" />
             </ListItemIcon>
             <ListItemText primary="Products" sx={{ opacity: open ? 1 : 0 }} />
           </ListItemButton>
@@ -143,6 +147,7 @@ export default function Sidenav() {
               minHeight: 48,
               justifyContent: open ? "initial" : "center",
               px: 2.5,
+              color: "#fff",
             }}
           >
             <ListItemIcon
@@ -152,9 +157,12 @@ export default function Sidenav() {
                 justifyContent: "center",
               }}
             >
-              <DateRangeIcon />
+              <DateRangeIcon color="background" />
             </ListItemIcon>
-            <ListItemText primary="Bookings" sx={{ opacity: open ? 1 : 0 }} />
+            <ListItemText
+              primary="Bookings"
+              sx={{ opacity: open ? 1 : 0 }}
+            />
           </ListItemButton>
         </ListItem>
 
@@ -170,6 +178,7 @@ export default function Sidenav() {
               minHeight: 48,
               justifyContent: open ? "initial" : "center",
               px: 2.5,
+              color: "#fff",
             }}
           >
             <ListItemIcon
@@ -179,7 +188,7 @@ export default function Sidenav() {
                 justifyContent: "center",
               }}
             >
-              <AnalyticsIcon />
+              <AnalyticsIcon color="background" />
             </ListItemIcon>
             <ListItemText primary="Analytics" sx={{ opacity: open ? 1 : 0 }} />
           </ListItemButton>
@@ -196,6 +205,7 @@ export default function Sidenav() {
               minHeight: 48,
               justifyContent: open ? "initial" : "center",
               px: 2.5,
+              color: "#fff",
             }}
           >
             <ListItemIcon
@@ -205,7 +215,7 @@ export default function Sidenav() {
                 justifyContent: "center",
               }}
             >
-              <SettingsIcon />
+              <SettingsIcon color="background" />
             </ListItemIcon>
             <ListItemText primary="Settings" sx={{ opacity: open ? 1 : 0 }} />
           </ListItemButton>

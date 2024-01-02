@@ -219,7 +219,7 @@ export default function AddForm() {
           <Typography variant="h5" align="center" gutterBottom>
             Add Clinic
           </Typography>
-          <Grid container spacing={2}>
+          <Grid container spacing={3}>
             <Grid item xs={12}>
               <TextField
                 id="name"
@@ -280,11 +280,11 @@ export default function AddForm() {
             <Grid item xs={12}>
             <h3>Business Hours</h3>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Grid container spacing={3}>
+                <Grid container spacing={3} >
                   
                   {Object.keys(formData.openingHours).map((day) => (
-                    <Grid item xs={6} key={day}>
-                      <FormControl fullWidth>
+                    <Grid item xs={6} key={day} >
+                      <FormControl fullWidth sx={{'margin-bottom':'10px'}}>
                         <InputLabel id={`${day}-opening-picker-label`} sx={{ margin: "0 100px" }}>
                           {day} Opening
                         </InputLabel>

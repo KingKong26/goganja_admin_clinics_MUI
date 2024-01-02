@@ -1,4 +1,5 @@
 .pricetitle {
+    font-family: 'montserrat';
     font-weight: 600;
 }
 
@@ -22,7 +23,7 @@
 
 .bgcolor {
     min-height: 100vh;
-    background: #ECEFF1;
+    background: #314435;
     background: linear-gradient(158deg, rgb(224, 224, 224) 0%, rrgb(233, 237, 254)100%);
 }
 

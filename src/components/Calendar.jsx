@@ -22,6 +22,7 @@ import {
   FormControl,
   Modal,
   TextField,
+  Typography,
 } from "@mui/material";
 import styled from "@emotion/styled";
 import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
@@ -34,6 +35,13 @@ export const StyleWrapper = styled.div`
   .fc .fc-daygrid-body,
   .fc .fc-scrollgrid-section-body table {
     width: 100% !important;
+  }
+  .fc .fc-toolbar-title,
+  .fc .fc-col-header-cell-cushion {
+    font-family: "montserrat";
+  }
+  .fc .fc-button-bg-color {
+    background-color: #314435;
   }
 `;
 
@@ -98,7 +106,7 @@ const CalendarComponent = () => {
       if (!formData.firstName.trim()) {
         newErrors.firstName = "first  name is required";
       }
-      if (!formData['clinic time']) {
+      if (!formData["clinic time"]) {
         newErrors.clinicTime = "Clinic time is required";
       }
       if (Object.keys(newErrors).length > 0) {
@@ -116,7 +124,7 @@ const CalendarComponent = () => {
     const handleTimeChange = (time) => {
       if (time != null) {
         setErrors({ ...errors, clinicTime: "" });
-      } 
+      }
       const timestamp = time ? new Date(time).toLocaleTimeString() : null;
 
       setFormData((prevData) => ({
@@ -162,9 +170,13 @@ const CalendarComponent = () => {
             >
               <CloseIcon style={{ fontSize: "20px", color: "black" }} />
             </span>
-            <h2 id="modal-title">
+            <Typography
+              variant="h5"
+              id="modal-title"
+              sx={{ fontWeight: 500, marginBottom: "10px" }}
+            >
               {eventAction === "edit" ? "Update Event" : "Add Event"}
-            </h2>
+            </Typography>
             <form onSubmit={handleConfirm}>
               <TextField
                 type="text"
@@ -278,29 +290,31 @@ const CalendarComponent = () => {
                     id="time-picker"
                     value={initialTime}
                     onChange={handleTimeChange}
-                    error={ Boolean(errors.clinicTime)}
+                    error={Boolean(errors.clinicTime)}
                     helperText={errors.clinicTime}
                     sx={{
                       "& fieldset": {
-                        borderColor:
-                           errors.clinicTime
-                            ? "#d32f2f"
-                            : undefined,
+                        borderColor: errors.clinicTime ? "#d32f2f" : undefined,
                       },
                     }}
                   />
-                  { Boolean(errors.clinicTime) && (
+                  {Boolean(errors.clinicTime) && (
                     <span className="errorText ">{errors.clinicTime}</span>
                   )}
                 </FormControl>
-                ,
               </LocalizationProvider>
             </form>
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginTop: "16px",
+                gap: 10,
+              }}
+            >
               <Button
                 variant="contained"
                 color="primary"
-                style={{ marginRight: "10px" }}
                 onClick={handleConfirm}
               >
                 Confirm
@@ -338,7 +352,7 @@ const CalendarComponent = () => {
         console.error("Error updating event:", error);
       }
     }
-    setUpdateModalOpen(false); 
+    setUpdateModalOpen(false);
   };
 
   const handleEventClick = (info, eventAction) => {
@@ -379,7 +393,7 @@ const CalendarComponent = () => {
   // Event handler for deleting an event
   const handleDeleteEvent = async (info, event) => {
     try {
-      await deleteDoc(doc(db, "events", selectedEvent.id)); 
+      await deleteDoc(doc(db, "events", selectedEvent.id));
       const updatedEvents = events.filter(
         (event) => event.id !== selectedEvent.id
       );
@@ -398,8 +412,8 @@ const CalendarComponent = () => {
               plugins={[dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
               events={events}
-              dateClick={(info) => handleEventClick(info, "add")} 
-              eventClick={(info) => handleEventClick(info.event, "edit")} 
+              dateClick={(info) => handleEventClick(info, "add")}
+              eventClick={(info) => handleEventClick(info.event, "edit")}
               eventContent={(eventContent) => (
                 <>
                   <span>{eventContent.timeText}</span>
@@ -410,7 +424,12 @@ const CalendarComponent = () => {
                     {eventContent.event.extendedProps?.formData?.lastName} -
                   </span>
                   <span>
-                    {eventContent.event.extendedProps?.formData["clinic time"].split("").filter((_,index)=>index!==5&&index!==6&&index!==7).join('')}
+                    {eventContent.event.extendedProps?.formData["clinic time"]
+                      .split("")
+                      .filter(
+                        (_, index) => index !== 5 && index !== 6 && index !== 7
+                      )
+                      .join("")}
                   </span>
                 </>
               )}

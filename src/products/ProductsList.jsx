@@ -11,6 +11,7 @@ import {
   Autocomplete,
   Box,
   Button,
+  CircularProgress,
   Divider,
   Stack,
   TextField,
@@ -120,19 +121,20 @@ export default function StickyHeadTable() {
           </Box>
         </Modal>
       </div>
-      {rows.length > 0 && (
+      {rows.length > 0 ? (
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
-          <Typography
-            gutterBottom
-            variant="h5"
-            component="div"
-            sx={{ padding: "20px" }}
-          >
+          <Typography variant="h5" component="div" sx={{ padding: "16px" }}>
             Your listings
           </Typography>
           <Divider />
-          <Box height={10} />
-          <Stack direction="row" spacing={2} className="my-2 mb-2">
+          <Box height={16} />
+          <Stack
+            direction="row"
+            spacing={2}
+            className="my-2 mb-2"
+            sx={{ padding: "0 16px " }}
+            justifyContent="space-between"
+          >
             <Autocomplete
               disablePortal
               id="combo-box-demo"
@@ -144,11 +146,7 @@ export default function StickyHeadTable() {
                 <TextField {...params} size="small" label="Search Products" />
               )}
             />
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ flexGrow: 1 }}
-            ></Typography>
+
             <Button
               variant="contained"
               endIcon={<AddCircleIcon />}
@@ -174,6 +172,7 @@ export default function StickyHeadTable() {
                   <TableCell align="left" style={{ minWidth: "100px" }}>
                     City
                   </TableCell>
+                  <TableCell align="left"></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -202,11 +201,12 @@ export default function StickyHeadTable() {
                             <EditIcon
                               style={{
                                 fontSize: "20px",
-                                color: "blue",
+
                                 cursor: "pointer",
                               }}
                               className="cursor-pointer"
                               // onClick={() => editUser(row.id)}
+                              color="secondary"
                             />
                             <DeleteIcon
                               style={{
@@ -236,6 +236,20 @@ export default function StickyHeadTable() {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Paper>
+      ) : (
+        <Box
+          sx={{
+            width: "100%",
+            overflow: "hidden",
+            display: "flex",
+            justifyContent: "center",
+            flex: 1,
+            alignItems: "center",
+            height: "500px",
+          }}
+        >
+          <CircularProgress color="secondary" />
+        </Box>
       )}
     </>
   );

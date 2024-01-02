@@ -13,7 +13,7 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import VBarChart from "../charts/VBarChart";
-import CountUp from 'react-countup';
+import CountUp from "react-countup";
 
 export default function Home() {
   return (
@@ -80,30 +80,30 @@ export default function Home() {
                 </Stack>
               </Grid>
               <Grid item xs={4}>
-                <Stack spacing={2}>
-                  <Card className="gradientlight">
-                    <Stack spacing={2} direction="row">
-                      <div className="iconstylewhite">
-                        <StorefrontIcon />
-                      </div>
-                      <div className="paddingall">
-                        <span className="pricetitle fontwhite">$203k</span>
-                        <br />
-                        <span className="pricesubtitle fontlightgrey">
-                          Total Income
-                        </span>
+                <Stack spacing={2} direction={"column"}>
+                  <Card className="gradientlight" sx={{ padding: "10px" }}>
+                    <Stack
+                      spacing={2}
+                      direction="row"
+                      alignItems={"center"}
+                    >
+                      <StorefrontIcon color="background" />
+                      <div>
+                        <Typography variant="subtitle2" color="Background">$203k</Typography>
+                        <Typography variant="caption" color="Background">Total Income</Typography>
                       </div>
                     </Stack>
                   </Card>
-                  <Card>
-                    <Stack spacing={2} direction="row">
-                      <div className="iconstyle">
-                        <StorefrontIcon />
-                      </div>
-                      <div className="paddingall">
-                        <span className="pricetitle">$203k</span>
-                        <br />
-                        <span className="pricesubtitle">Total Income</span>
+                  <Card sx={{ padding: "10px" }}>
+                    <Stack
+                      spacing={2}
+                      direction="row"
+                      alignItems={"center"}
+                    >
+                      <StorefrontIcon />
+                      <div>
+                        <Typography variant="subtitle2">$130k</Typography>
+                        <Typography variant="caption">Total Expenses</Typography>
                       </div>
                     </Stack>
                   </Card>
