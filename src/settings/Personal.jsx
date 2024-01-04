@@ -277,8 +277,6 @@ export default function Personal() {
       >
         {loading ? "Updating..." : "Update"}
       </Button>
-
-      <Box height={20} />
     </form>
   );
 }

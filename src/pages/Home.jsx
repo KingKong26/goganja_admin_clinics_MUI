@@ -13,7 +13,7 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import VBarChart from "../charts/VBarChart";
-import CountUp from 'react-countup';
+import CountUp from "react-countup";
 
 export default function Home() {
   return (
@@ -110,8 +110,6 @@ export default function Home() {
                 </Stack>
               </Grid>
             </Grid>
-
-            <Box height={20} />
 
             <Grid container spacing={2}>
               <Grid item xs={8}>
