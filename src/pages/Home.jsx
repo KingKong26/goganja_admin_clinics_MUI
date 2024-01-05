@@ -111,7 +111,7 @@ export default function Home() {
               </Grid>
             </Grid>
 
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{mt: 0}}>
               <Grid item xs={8}>
                 <Card sx={{ height: 60 + "vh" }}>
                   <CardContent>
