@@ -242,7 +242,7 @@ export default function Navbar() {
               onClick={handleMobileMenuOpen}
               color="background"
             >
-              <MoreIcon />
+              <MoreIcon color="secondary"/>
             </IconButton>
           </Box>
         </Toolbar>
