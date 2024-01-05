@@ -102,7 +102,7 @@ export default function Sidenav() {
                 justifyContent: "center",
               }}
             >
-              <HomeIcon color="background" />
+              <HomeIcon color="secondary" />
             </ListItemIcon>
             <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
           </ListItemButton>
@@ -129,7 +129,7 @@ export default function Sidenav() {
                 justifyContent: "center",
               }}
             >
-              <ShoppingCartIcon color="background" />
+              <ShoppingCartIcon color="secondary" />
             </ListItemIcon>
             <ListItemText primary="Products" sx={{ opacity: open ? 1 : 0 }} />
           </ListItemButton>
@@ -157,7 +157,7 @@ export default function Sidenav() {
                 justifyContent: "center",
               }}
             >
-              <DateRangeIcon color="background" />
+              <DateRangeIcon color="secondary" />
             </ListItemIcon>
             <ListItemText
               primary="Bookings"
@@ -188,7 +188,7 @@ export default function Sidenav() {
                 justifyContent: "center",
               }}
             >
-              <AnalyticsIcon color="background" />
+              <AnalyticsIcon color="secondary" />
             </ListItemIcon>
             <ListItemText primary="Analytics" sx={{ opacity: open ? 1 : 0 }} />
           </ListItemButton>
@@ -215,7 +215,7 @@ export default function Sidenav() {
                 justifyContent: "center",
               }}
             >
-              <SettingsIcon color="background" />
+              <SettingsIcon color="secondary" />
             </ListItemIcon>
             <ListItemText primary="Settings" sx={{ opacity: open ? 1 : 0 }} />
           </ListItemButton>

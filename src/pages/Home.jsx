@@ -20,7 +20,7 @@ export default function Home() {
     <>
       <div className="bgcolor">
         <Navbar />
-        <Box height={70} />
+        <Box height={65} />
         <Box sx={{ display: "flex" }}>
           <Sidenav />
           <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

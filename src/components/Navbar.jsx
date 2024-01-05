@@ -192,7 +192,7 @@ export default function Navbar() {
           <IconButton
             size="large"
             edge="start"
-            color="background"
+            color="secondary"
             aria-label="open drawer"
             onClick={() => {
               updateDopen(!dopen);
@@ -209,7 +209,7 @@ export default function Navbar() {
               color="background"
             >
               <Badge badgeContent={4} color="error">
-                <MailIcon />
+                <MailIcon color="secondary"/>
               </Badge>
             </IconButton>
             <IconButton
@@ -218,7 +218,7 @@ export default function Navbar() {
               color="background"
             >
               <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
+                <NotificationsIcon color="secondary"/>
               </Badge>
             </IconButton>
             <IconButton
@@ -230,7 +230,7 @@ export default function Navbar() {
               onClick={handleProfileMenuOpen}
               color="background"
             >
-              <AccountCircle />
+              <AccountCircle color="secondary"/>
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
