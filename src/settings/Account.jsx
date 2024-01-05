@@ -12,47 +12,69 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import Switch from "@mui/material/Switch";
+import { useAuth } from "../context/UserContext";
+import { Button, MenuItem } from "@mui/material";
+import { doc, updateDoc } from "firebase/firestore/lite";
+import { auth, db } from "../firebase-config";
+
+const locations = [
+  {
+    value: "United State",
+    label: "United State",
+  },
+  {
+    value: "India",
+    label: "India",
+  },
+  {
+    value: "Germany",
+    label: "Germany",
+  },
+];
+
+const utypes = [
+  {
+    value: "Super Admin",
+    label: "Super Admin",
+  },
+  {
+    value: "Admin",
+    label: "Admin",
+  },
+  {
+    value: "Manager",
+    label: "Manager",
+  },
+  {
+    value: "User",
+    label: "User",
+  },
+];
 
 export default function Account() {
+  const [loading, setLoading] = useState(false);
+  const { userData, updateUser } = useAuth();
+  const user = auth.currentUser;
+
   const [state, setState] = useState({
     gilad: true,
     jason: false,
     antoine: true,
   });
 
-  const locations = [
-    {
-      value: "United State",
-      label: "United State",
-    },
-    {
-      value: "India",
-      label: "India",
-    },
-    {
-      value: "Germany",
-      label: "Germant",
-    },
-  ];
+  const [values, setValues] = useState({
+    username: userData?.username || "",
+    email: userData?.email || "",
+    userType: userData?.userType || "",
+    location: userData?.location || "",
+  });
 
-  const utypes = [
-    {
-      value: "Super Admin",
-      label: "Super Admin",
-    },
-    {
-      value: "Admin",
-      label: "Admin",
-    },
-    {
-      value: "Manager",
-      label: "Manager",
-    },
-    {
-      value: "User",
-      label: "User",
-    },
-  ];
+  const onValueChangeHandler = (event) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      [event.target.name]: event.target.value,
+    }));
+  };
 
   const handleChange = (event) => {
     setState({
@@ -60,8 +82,32 @@ export default function Account() {
       [event.target.name]: event.target.checked,
     });
   };
+
+  const onSubmitHandler = async (event) => {
+    try {
+      setLoading(true);
+      event.preventDefault();
+
+      // Check if any value is empty
+      // for (let key in values) {
+      //   if (values[key] === "") {
+      //     alert(`Please fill in the ${key}`);
+      //     setLoading(false);
+      //     return;
+      //   }
+      // }
+
+      await updateDoc(doc(db, "users", user.uid), values);
+      updateUser(values);
+      alert("Account details updated successfully!");
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <>
+    <form onSubmit={onSubmitHandler}>
       <Grid container spacing={2} sx={{ mt: "20" }}>
         <Grid item xs={12}>
           <Card>
@@ -74,18 +120,20 @@ export default function Account() {
                 <Grid item xs={6}>
                   <TextField
                     label="Username"
-                    value="CodingMSTR"
                     name="username"
                     sx={{ marginTop: "30px", minWidth: "100%" }}
                     variant="outlined"
+                    onChange={onValueChangeHandler}
+                    value={values.username}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
                     label="Account Email"
-                    value="code@codingmstr.com"
                     type="email"
                     name="email"
+                    disabled={true}
+                    value={values.email}
                     sx={{ marginTop: "30px", minWidth: "100%" }}
                     variant="outlined"
                   />
@@ -95,16 +143,17 @@ export default function Account() {
                 <Grid item xs={6}>
                   <TextField
                     label="User Type"
-                    name="type"
-                    value="Super Admin"
+                    name="userType"
+                    value={values.userType}
                     select
                     sx={{ marginTop: "30px", minWidth: "100%" }}
                     variant="outlined"
+                    onChange={onValueChangeHandler}
                   >
                     {utypes.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        &nbsp;&nbsp;{option.label}
-                      </option>
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
                     ))}
                   </TextField>
                 </Grid>
@@ -112,25 +161,33 @@ export default function Account() {
                   <TextField
                     label="Location"
                     name="location"
-                    value="India"
                     select
                     sx={{ marginTop: "30px", minWidth: "100%" }}
                     variant="outlined"
+                    value={values.location}
+                    onChange={onValueChangeHandler}
                   >
                     {locations.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        &nbsp;&nbsp; {option.label}
-                      </option>
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
                     ))}
                   </TextField>
                 </Grid>
               </Grid>
             </CardContent>
+            <Button
+              sx={{ margin: "16px" }}
+              disabled={loading}
+              variant="contained"
+              type="submit"
+            >
+              {loading ? "Updating..." : "Update"}
+            </Button>
           </Card>
         </Grid>
       </Grid>
-      <Box height={20} />
-      <Grid container spacing={2} sx={{ mt: "200" }}>
+      {/* <Grid container spacing={2} sx={{ mt: "200" }}>
         <Grid item xs={12}>
           <Card>
             <CardContent>
@@ -186,7 +243,7 @@ export default function Account() {
             </CardContent>
           </Card>
         </Grid>
-      </Grid>
-    </>
+      </Grid> */}
+    </form>
   );
 }
